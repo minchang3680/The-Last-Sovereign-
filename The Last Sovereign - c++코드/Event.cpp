@@ -16,10 +16,36 @@ Event::Event(string n, string desc, int eco, int mil, int mor, int rel, int sciM
 void Event::displayEvent() const {
     cout << "\n📜 이벤트 발생: " << name << endl;
     cout << description << endl;
-    cout << "변화: 경제(" << economyChange << "), 군사(" << militaryChange
-        << "), 민심(" << moraleChange << "), 종교(" << religionChange
-        << "), 과학/마법(" << scienceOrMagicChange << ")\n";
+
+    // 🔹 변화량을 저장할 벡터
+    vector<string> changes;
+
+    if (static_cast<int>(economyChange) != 0)
+        changes.push_back("경제 " + string((economyChange > 0 ? "+" : "")) + to_string(static_cast<int>(economyChange)));
+    if (static_cast<int>(militaryChange) != 0)
+        changes.push_back("군사 " + string((militaryChange > 0 ? "+" : "")) + to_string(static_cast<int>(militaryChange)));
+    if (static_cast<int>(moraleChange) != 0)
+        changes.push_back("민심 " + string((moraleChange > 0 ? "+" : "")) + to_string(static_cast<int>(moraleChange)));
+    if (static_cast<int>(religionChange) != 0)
+        changes.push_back("종교 " + string((religionChange > 0 ? "+" : "")) + to_string(static_cast<int>(religionChange)));
+    if (static_cast<int>(scienceOrMagicChange) != 0)
+        changes.push_back("과학/마법 " + string((scienceOrMagicChange > 0 ? "+" : "")) + to_string(static_cast<int>(scienceOrMagicChange)));
+
+    // 🔹 변경 사항 출력 (0인 값은 출력 안 함)
+    if (!changes.empty()) {
+        cout << "변화: ";
+        for (size_t i = 0; i < changes.size(); i++) {
+            cout << changes[i];
+            if (i < changes.size() - 1) cout << ", ";
+        }
+        cout << endl;
+    }
+    else {
+        cout << "변화 없음" << endl;
+    }
 }
+
+
 
 // 🔹 이벤트를 플레이어에게 적용
 void Event::applyEvent(Resources& player) {
