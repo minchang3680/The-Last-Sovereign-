@@ -39,6 +39,12 @@ void TurnSystem::playTurn() {
     currentPlayer->display();
     cout << endl;
 
+    if (turn % 4 == 0) {
+        int economicBoost = 10;  // 보급량 (조정 가능)
+        currentPlayer->modify(economicBoost, 0, 0, 0, 0);  // ✅ modify() 사용
+        cout << "📢 경제 보급을 받았습니다! 경제 +" << economicBoost << endl;
+    }
+
     // ✅ 랜덤 이벤트 발생
     Event randomEvent = Event::generateRandomEvent();
     randomEvent.displayEvent(currentPlayer->getNationType());  // ✅ 국가 유형 전달!
