@@ -31,7 +31,7 @@ public:
 	Resources();
 	Resources(string nation);
 	void modify(int eco, int mil,int mor, int rel, int sciMag);	// 자원 변경
-	bool checkGameOver(); // 게임오버확인
+	bool checkGameOver(Resources& opponent); // 게임오버확인
 	void trackMaxResourceTurns(); // 자원100%이상 유지 확인
 	void display(); //현재 각 자원 상태 확인
 };

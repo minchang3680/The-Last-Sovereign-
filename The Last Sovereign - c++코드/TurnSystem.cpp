@@ -51,8 +51,7 @@ void TurnSystem::playTurn() {
     currentPlayer->trackMaxResourceTurns();
 
     // ✅ 게임 오버 확인
-    if (currentPlayer->checkGameOver()) {
-        cout << "패배 조건 충족! 게임이 종료됩니다." << endl;
+    if (currentPlayer->checkGameOver(*getOpponentPlayer())) {  // ✅ 상대 플레이어 전달
         exit(0);
     }
 }
@@ -61,10 +60,9 @@ void TurnSystem::playTurn() {
 
 bool TurnSystem::checkEnd() {
     // ✅ 1. 플레이어가 패배했는지 확인
-    if (sciencePlayer.checkGameOver() || magicPlayer.checkGameOver()) {
-        return true;  // 패배 조건 충족 → 게임 종료
+    if (sciencePlayer.checkGameOver(magicPlayer) || magicPlayer.checkGameOver(sciencePlayer)) {  // ✅ 상대 플레이어 전달
+        return true;
     }
-
     // ✅ 2. 연구 승리 조건 확인
     if (scienceResearchCount >= 4 && sciencePlayer.getMilitary() >= 60) {
         cout << "\n승리! 과학 왕국이 핵폭탄을 개발하여 전쟁에서 승리했습니다!" << endl;

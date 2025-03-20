@@ -20,6 +20,11 @@ public:
     void playTurn(); // 턴 진행
     void swapCurrentPlayer(); // ✅ 플레이어 교체 기능 추가
     bool checkEnd(); // 게임 종료 조건 확인
+    Resources* getOpponentPlayer() {
+        return (currentPlayer == &sciencePlayer) ? &magicPlayer : &sciencePlayer;
+    }
 };
+
+
 
 
