@@ -13,8 +13,8 @@ Event::Event(string n, string desc, int eco, int mil, int mor, int rel, int sciM
 }
 
 // 🔹 이벤트 내용 출력
-void Event::displayEvent() const {
-    cout << "\n📜 이벤트 발생: " << name << endl;
+void Event::displayEvent(const string& nationType) const {
+    cout << "\n[이벤트 발생] " << name << endl;
     cout << description << endl;
 
     // 🔹 변화량을 저장할 벡터
@@ -28,22 +28,25 @@ void Event::displayEvent() const {
         changes.push_back("민심 " + string((moraleChange > 0 ? "+" : "")) + to_string(static_cast<int>(moraleChange)));
     if (static_cast<int>(religionChange) != 0)
         changes.push_back("종교 " + string((religionChange > 0 ? "+" : "")) + to_string(static_cast<int>(religionChange)));
-    if (static_cast<int>(scienceOrMagicChange) != 0)
-        changes.push_back("과학/마법 " + string((scienceOrMagicChange > 0 ? "+" : "")) + to_string(static_cast<int>(scienceOrMagicChange)));
+
+    // 🔹 과학/마법 변경값을 국가 유형에 따라 다르게 출력
+    if (static_cast<int>(scienceOrMagicChange) != 0) {
+        if (nationType == "Science") {
+            changes.push_back("과학 " + string((scienceOrMagicChange > 0 ? "+" : "")) + to_string(static_cast<int>(scienceOrMagicChange)));
+        }
+        else if (nationType == "Magic") {
+            changes.push_back("마법 " + string((scienceOrMagicChange > 0 ? "+" : "")) + to_string(static_cast<int>(scienceOrMagicChange)));
+        }
+    }
 
     // 🔹 변경 사항 출력 (0인 값은 출력 안 함)
-    if (!changes.empty()) {
-        cout << "변화: ";
-        for (size_t i = 0; i < changes.size(); i++) {
-            cout << changes[i];
-            if (i < changes.size() - 1) cout << ", ";
-        }
-        cout << endl;
+    for (size_t i = 0; i < changes.size(); i++) {
+        cout << changes[i];
+        if (i < changes.size() - 1) cout << ", ";
     }
-    else {
-        cout << "변화 없음" << endl;
-    }
+    cout << endl;
 }
+
 
 
 

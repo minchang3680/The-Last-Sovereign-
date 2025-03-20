@@ -41,7 +41,7 @@ void TurnSystem::playTurn() {
 
     // ✅ 랜덤 이벤트 발생
     Event randomEvent = Event::generateRandomEvent();
-    randomEvent.displayEvent();
+    randomEvent.displayEvent(currentPlayer->getNationType());  // ✅ 국가 유형 전달!
     randomEvent.applyEvent(*currentPlayer);
 
     // ✅ 결과 가독성을 위한 줄바꿈 추가
