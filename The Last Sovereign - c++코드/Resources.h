@@ -22,6 +22,10 @@ private:
 	int maxReligion; // 종교 최대치
 	int maxScienOrMagic; // 과학 혹은 마법 최대치
 
+	int scienceResearchCount = 0;  // 과학 연구 횟수
+    int magicResearchCount = 0;    // 마법 연구 횟수
+    bool militaryUpgradeCompleted = false;  // 군사 업그레이드 완료 여부
+
 	int turnAtMax[5]; // 100% 초과 상태가 유지된 턴 수 
 	// -> 1.경제 2. 군사 3. 민심 4. 종교 5. 과학/마법으로 총 5개이므로 [5]이다.
 
@@ -34,4 +38,12 @@ public:
 	bool checkGameOver(Resources& opponent); // 게임오버확인
 	void trackMaxResourceTurns(); // 자원100%이상 유지 확인
 	void display(); //현재 각 자원 상태 확인
+
+	void incrementResearch();  // 연구 횟수 증가
+	void completeMilitaryUpgrade();  // 군사 업그레이드 완료
+
+	int getScienceResearchCount() const;
+	int getMagicResearchCount() const;
+	bool isMilitaryUpgraded() const;
+
 };

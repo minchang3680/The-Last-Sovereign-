@@ -158,6 +158,33 @@ int Resources::getMilitary() const {
     return military;
 }
 
+void Resources::incrementResearch() {
+    if (nationType == "Science") {
+        scienceResearchCount++;
+    }
+    else {
+        magicResearchCount++;
+    }
+}
+
+void Resources::completeMilitaryUpgrade() {
+    militaryUpgradeCompleted = true;
+}
+
+int Resources::getScienceResearchCount() const {
+    return scienceResearchCount;
+}
+
+int Resources::getMagicResearchCount() const {
+    return magicResearchCount;
+}
+
+bool Resources::isMilitaryUpgraded() const {
+    return militaryUpgradeCompleted;
+}
+
+
+
 
 
 

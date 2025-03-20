@@ -7,66 +7,45 @@
 using namespace std;
 
 // 🔹 생성자: 이벤트의 기본 정보 설정
-Event::Event(string n, string desc, int eco, int mil, int mor, int rel, int sciMag)
-    : name(n), description(desc), economyChange(eco), militaryChange(mil),
-    moraleChange(mor), religionChange(rel), scienceOrMagicChange(sciMag) {
+Event::Event(string n, string desc, string optA, string optB,
+    int ecoA, int milA, int morA, int relA, int sciMagA,
+    int ecoB, int milB, int morB, int relB, int sciMagB)
+    : name(n), description(desc), optionA(optA), optionB(optB),
+    economyChangeA(ecoA), militaryChangeA(milA), moraleChangeA(morA), religionChangeA(relA), scienceOrMagicChangeA(sciMagA),
+    economyChangeB(ecoB), militaryChangeB(milB), moraleChangeB(morB), religionChangeB(relB), scienceOrMagicChangeB(sciMagB) {
 }
 
-// 🔹 이벤트 내용 출력
-void Event::displayEvent(const string& nationType) const {
+
+void Event::displayEvent() const {
     cout << "\n[이벤트 발생] " << name << endl;
     cout << description << endl;
-
-    // 🔹 변화량을 저장할 벡터
-    vector<string> changes;
-
-    if (static_cast<int>(economyChange) != 0)
-        changes.push_back("경제 " + string((economyChange > 0 ? "+" : "")) + to_string(static_cast<int>(economyChange)));
-    if (static_cast<int>(militaryChange) != 0)
-        changes.push_back("군사 " + string((militaryChange > 0 ? "+" : "")) + to_string(static_cast<int>(militaryChange)));
-    if (static_cast<int>(moraleChange) != 0)
-        changes.push_back("민심 " + string((moraleChange > 0 ? "+" : "")) + to_string(static_cast<int>(moraleChange)));
-    if (static_cast<int>(religionChange) != 0)
-        changes.push_back("종교 " + string((religionChange > 0 ? "+" : "")) + to_string(static_cast<int>(religionChange)));
-
-    // 🔹 과학/마법 변경값을 국가 유형에 따라 다르게 출력
-    if (static_cast<int>(scienceOrMagicChange) != 0) {
-        if (nationType == "Science") {
-            changes.push_back("과학 " + string((scienceOrMagicChange > 0 ? "+" : "")) + to_string(static_cast<int>(scienceOrMagicChange)));
-        }
-        else if (nationType == "Magic") {
-            changes.push_back("마법 " + string((scienceOrMagicChange > 0 ? "+" : "")) + to_string(static_cast<int>(scienceOrMagicChange)));
-        }
-    }
-
-    // 🔹 변경 사항 출력 (0인 값은 출력 안 함)
-    for (size_t i = 0; i < changes.size(); i++) {
-        cout << changes[i];
-        if (i < changes.size() - 1) cout << ", ";
-    }
-    cout << endl;
+    cout << "1. " << optionA << endl;
+    cout << "2. " << optionB << endl;
 }
 
 
-
-
-// 🔹 이벤트를 플레이어에게 적용
-void Event::applyEvent(Resources& player) {
-    player.modify(economyChange, militaryChange, moraleChange, religionChange, scienceOrMagicChange);
+void Event::applyEvent(Resources& player, char choice) {
+    if (choice == '1') {
+        player.modify(economyChangeA, militaryChangeA, moraleChangeA, religionChangeA, scienceOrMagicChangeA);
+    }
+    else {
+        player.modify(economyChangeB, militaryChangeB, moraleChangeB, religionChangeB, scienceOrMagicChangeB);
+    }
 }
 
-// 🔹 랜덤 이벤트 생성 (확률 기반)
 Event Event::generateRandomEvent() {
-
     vector<Event> eventList = {
-        Event("풍년!", "경제가 활기를 띠었습니다.", 10, 0, 5, 0, 0),
-        Event("전쟁의 기운", "군사력이 증가했습니다.", 0, 10, -5, 0, 0),
-        Event("종교적 개혁", "종교적 신념이 강화되었습니다.", 0, 0, 0, 10, -5),
-        Event("과학 발전", "과학 기술이 크게 발전했습니다.", 0, 0, 0, 0, 15),
-        Event("마법의 대격변", "마법이 폭발적으로 성장했습니다.", 0, 0, 0, 0, 15),
-        Event("세금 감면", "경제적 지원이 증가했습니다.", 15, 0, -5, 0, 0),
-        Event("민심 동요", "민심이 흔들렸습니다.", 0, 0, -10, 0, 0),
-        Event("성직자의 가르침", "종교가 강화되었습니다.", 0, 0, 0, 10, 0)
+        Event("세금 정책", "세금을 조정할 기회입니다.",
+              "세금 인상 (경제 +10, 민심 -5)", "세금 감면 (경제 -10, 민심 +5)",
+              10, 0, -5, 0, 0,  -10, 0, 5, 0, 0),
+
+        Event("군사 훈련", "군사력을 강화할 것인가?",
+              "강력한 훈련 (군사 +10, 경제 -5)", "훈련 완화 (군사 -5, 경제 +10)",
+              -5, 10, 0, 0, 0,   10, -5, 0, 0, 0),
+
+        Event("종교 개혁", "종교적 개혁을 단행합니다.",
+              "종교 강화 (종교 +10, 민심 -5)", "종교 자유화 (종교 -5, 민심 +10)",
+              0, 0, -5, 10, 0,   0, 0, 10, -5, 0)
     };
 
     int randomIndex = rand() % eventList.size();
