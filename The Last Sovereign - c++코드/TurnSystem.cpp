@@ -2,6 +2,8 @@
 #include "Event.h"
 #include <iostream>
 #include <tuple>
+#include <thread>  // sleep_for 사용
+#include <chrono>  // 시간 관련 기능
 
 using namespace std;
 
@@ -29,9 +31,16 @@ void TurnSystem::start() {
 }
 
 void TurnSystem::playTurn() {
-    cout << "===== 턴 " << turn << " =====\n" << endl;
+    cout << "\n\n===== 턴 " << turn << " =====\n" << endl;
     cout << "[ " << currentPlayer->getNationType() << " 왕국의 턴 ]\n" << endl;
     currentPlayer->display();
+    cout << endl;
+
+    // ✅ 4턴마다 경제 보급
+    if (turn % 4 == 0) {
+        cout << "📢 경제 보급! 국가에서 경제 지원을 받습니다. (경제 +10)\n";
+        currentPlayer->modify(10, 0, 0, 0, 0);
+    }
 
     // ✅ 랜덤 이벤트 생성 및 표시
     Event randomEvent = Event::generateRandomEvent();
@@ -40,7 +49,7 @@ void TurnSystem::playTurn() {
     // ✅ 플레이어 선택 받기
     char choice;
     do {
-        cout << "선택 (1 또는 2): ";
+        cout << "\n🔹 선택 (1 또는 2): ";
         cin >> choice;
     } while (choice != '1' && choice != '2');
 
@@ -54,7 +63,11 @@ void TurnSystem::playTurn() {
     if (currentPlayer->checkGameOver(*getOpponentPlayer())) {
         exit(0);
     }
+
+    // ✅ 선택 후 1.5초 동안 딜레이 추가
+    this_thread::sleep_for(chrono::milliseconds(500));  // 0.5초 대기
 }
+
 
 
 
